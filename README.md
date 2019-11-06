@@ -10,43 +10,56 @@ For CUDA installation follow: http://docs.nvidia.com/cuda/cuda-installation-guid
 
 For cuDNN follow: http://docs.nvidia.com/deeplearning/sdk/cudnn-install/index.html.
 
-Step 1: Update and Upgrade the packages list.
-1. sudo apt-get update
-2. sudo apt-get upgrade
+### Step 1: Update and Upgrade the packages list.
+```shell
+sudo apt-get update
+sudo apt-get upgrade
+```
 
-Step 2: Install general dependencies. Open terminal and type following commands in terminal.
-1. sudo apt-get install libprotobuf-dev libleveldb-dev libsnappy-dev libopencv-dev libhdf5-serial-dev protobuf-compiler
-2. sudo apt-get install --no-install-recommends libboost-all-dev
-3. sudo apt-get install libatlas-base-dev
-4. sudo apt-get install libopenblas-dev
-5. sudo apt-get install libgflags-dev libgoogle-glog-dev liblmdb-dev
+### Step 2: Install general dependencies. Open terminal and type following commands in terminal.
+```shell
+sudo apt-get install libprotobuf-dev libleveldb-dev libsnappy-dev libopencv-dev libhdf5-serial-dev protobuf-compiler
+sudo apt-get install --no-install-recommends libboost-all-dev
+sudo apt-get install libatlas-base-dev
+sudo apt-get install libopenblas-dev
+sudo apt-get install libgflags-dev libgoogle-glog-dev liblmdb-dev
+```
 
-Step 3: Go to the installation folder using "cd /your/path" command. Download/Clone the latest git repository using following command and go to
+### Step 3: Go to the installation folder using "cd /your/path" command. Download/Clone the latest git repository using following command and go to
 the caffe directory in terminal.
-1. git clone https://github.com/BVLC/caffe.git
-2. cd caffe
+```shell
+git clone https://github.com/BVLC/caffe.git
+cd caffe
+```
 
-Step 4: Install the python requirements for caffe. Use following commands in terminal.
-1. cd python
-2. for req in $(cat requirements.txt); do pip3 install --no-cache-dir $req; done (Wait for it to finish installation)
-3. cd ..
+### Step 4: Install the python requirements for caffe. Use following commands in terminal.
+```shell
+cd python
+for req in $(cat requirements.txt); do pip3 install --no-cache-dir $req; done (Wait for it to finish installation)
+cd ..
+```
 
-Step 5: Add caffe python path to the $PYTHONPATH
-1. export PYTHONPATH=/path/to/caffe/python
+### Step 5: Add caffe python path to the $PYTHONPATH(or Step 11)
+```shell
+export PYTHONPATH=/path/to/caffe/python
+```
 
 Example: export PYTHONPATH=/home/user/xyz/caffe/python
 
-Step 6: Get the Python 3.5 USER_SITE path by typing following command in the terminal.
-1. python3 -m site
-
+### Step 6: Get the Python 3.5 USER_SITE path by typing following command in the terminal.
+```shell
+python3 -m site
+```
 We will need the path given in USER_SITE. e.g. USER_SITE: '/home/user/.local/lib/python3.5/site-packages'. If USER_SITE doesn't exist, then use the one with /dist-packages in the end.
 
-Step 7: Generate the Makefile configuration file using following command in terminal.
-1. cp Makefile.config.example Makefile.config
+### Step 7: Generate the Makefile configuration file using following command in terminal.
+```shell
+cp Makefile.config.example Makefile.config
+```
 
-Step 8: We will adjust the Makefile.config file in order to install the caffe for Python 3. Edit the Makefile.config in your favourite editor.
+### Step 8: We will adjust the Makefile.config file in order to install the caffe for Python 3. Edit the Makefile.config in your favourite editor.
 
-Step 9: Perform the following changes in Makefile.config.
+### Step 9: Perform the following changes in Makefile.config.
 1. Comment the PYTHON_INCLUDE lines that refer to python2.7. They should look like this:
 
 #PYTHON_INCLUDE := /usr/include/python2.7 \
@@ -95,14 +108,32 @@ PYTHON_LIBRARIES := boost_python-py35 python3.5m
 
 10. Make sure CPU_ONLY := 1 is commented in order to install caffe with GPU support.
 
-Step 10: Install caffe using following commands. Make sure you are in caffe home directory.
+### Step 10: Install caffe using following commands. Make sure you are in caffe home directory.
+```shell
+make all
+make runtest
+```
 
-1. make all
-2. make runtest
-3. make pycaffe
+### Step 11: Install caffe
+By default, Caffe will not be installed (no target 'install' provided). We can copy the .so file manually
+```shell
+sudo cp build/lib/libcaffe.so* /usr/lib
+```
 
-Step 11: Check by importing caffe in python3 interpreter. Open python3 interpreter and import caffe.
+### Step 12: Install pycaffe
+1. Compile:
+```shell
+make pycaffe
+```
+2. install:
+Install pycaffe manually by copying to dist-packages
+```shell
+sudo cp -r python/caffe/ /usr/local/lib/python3.5/dist-packages/
+```
+
+### Step 13: Check by importing caffe in python3 interpreter. Open python3 interpreter and import caffe.
 1. python3
 2. import caffe
 
+or python3 -c "import caffe"
 At this point caffe should be imported and be able to use successfully. Sample "Makefile.config" is added for reference.
